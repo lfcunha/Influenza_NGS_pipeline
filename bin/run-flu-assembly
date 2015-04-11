@@ -1,0 +1,69 @@
+#!/bin/bash
+
+# 18.01.2015 09:34:45 EST
+# Harm van Bakel <hvbakel@gmail.com>
+
+# Set path to parent dir for git repositories
+GIT_REPODIR="${GIT_REPODIR:=$HOME/opt}"
+export GIT_REPODIR
+
+# Set paths to ngs-tools repository
+if [ -d "$GIT_REPODIR/influenza-ngs-assembly/" ]; then
+   export PATH="$GIT_REPODIR/influenza-ngs-assembly/bin/:$PATH"
+else
+   echo "Could not find the influenza-ngs-assembly repository in '$GIT_REPODIR'. Check GIT_REPODIR environment variable."
+   exit 1
+fi
+
+# Set paths to ngs-tools repository
+if [ -d "$GIT_REPODIR/ngs-tools/" ]; then
+   export PATH="$GIT_REPODIR/ngs-tools/bin:$PATH"
+   export PATH="$GIT_REPODIR/ngs-tools/pipelines/:$PATH"
+else
+   echo "Could not find the ngs-tools repository in '$GIT_REPODIR'. Check GIT_REPODIR environment variable."
+   exit 1
+fi
+
+# Set paths to igb-tools repository
+if [ -d "$GIT_REPODIR/igb-tools/" ]; then
+   export PATH="$GIT_REPODIR/igb-tools/bin:$PATH"
+else
+   echo "Could not find the igb-tools repository in $GIT_REPODIR. Check GIT_REPODIR environment variable."
+   exit 1
+fi
+
+# Set path to utility repository
+if [ -d "$GIT_REPODIR/utility/" ]; then
+   export PATH="$GIT_REPODIR/utility/bin:$PATH"
+   export PERL5LIB="$GIT_REPODIR/utility/perl5"
+else
+   echo "Could not find the igb-tools repository in $GIT_REPODIR. Check GIT_REPODIR environment variable."
+   exit 1
+fi
+
+# Load prerequisite modules
+module purge
+module load python/2.7.6
+module load py_packages
+module load trinity/2014-04-23
+module load blat/35
+module load bowtie/1.0.1
+module load samtools/1.1
+module load bcftools/1.1
+module load bedtools/2.21.0
+module load cap3/12-21-07
+module load R/3.0.3
+module load picard/1.112
+module load gatk/3.1.1
+module load fastqc/0.11.2
+module load pigz/2.3.1
+module load star/2.4.0g1
+module load bwa/0.7.8
+module load lofreq/2.1.1
+module load CPAN
+module load cd-hit/4.5.4
+module load vcftools/0.1.12b
+module load tabix/0.2.6
+
+# Pass arguments to pipeline makefile
+influenza_assemble-segments.mk $@

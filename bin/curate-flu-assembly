@@ -1,0 +1,16 @@
+#!/bin/sh
+
+mkdir curated
+for i in *_complete.fa;
+do 
+   name=`basename $i _complete.fa`;
+   cd curated
+   ln -s ../${name}_cutadapt.fastq.gz
+   if [ -e "../${name}_curated.fa" ]; then
+      cp ../${name}_curated.fa ${name}_curated.fa
+   else
+      cp ../${name}_complete.fa ${name}_curated.fa
+   fi
+   submitjob 12 -c 6 -P acc_vanbah01c run-flu-assembly in=$name report annotate lofreq;
+   cd ..
+done
