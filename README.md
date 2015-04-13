@@ -1,6 +1,8 @@
 # README #
 
 Repository for de novo influenza genome assembly pipeline.
+Original Pipeline: Harm Van Bakel
+Contribution with the python modules by Luis Cunha
 
 ## Requirements
 
